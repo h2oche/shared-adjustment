@@ -1,14 +1,22 @@
 import React, { Component } from 'react'
-import {Grid, Container, CssBaseline, Avatar, Typography, TextField, FormControlLabel, Button} from "@material-ui/core";
+import {Grid, CssBaseline, Avatar, Typography, TextField, Button, CircularProgress, FormControlLabel} from "@material-ui/core";
 import {LooksOutlined} from "@material-ui/icons";
 import {withStyles} from "@material-ui/core/styles"
 import LoginStyle from "../styles/Login";
+import {withFirebase} from "../components/firebase";
+
+const LoginStatus = {
+  initial: "LOGIN_STATE_INITIAL",
+  trying: "LOGIN_STATE_TRYING",
+  fail: "LOGIN_STATE_FAIL"
+};
 
 export class Login extends Component {
   // styles = LoginStyle();
   state = {
     email: "",
-    password: ""
+    password: "",
+    status: LoginStatus.initial
   }
 
   onEmailChange = (_event) => {
@@ -22,12 +30,65 @@ export class Login extends Component {
   onLogin = (_e) => {
     console.log(this.state);
     console.log("Try to login");
+    console.log(this.props);
+    const {email, password} = this.state;
+    this.props.firebase
+      .login(email, password)
+      .then(_authUser => {
+        console.log(_authUser);
+      })
+      .catch(_err => {
+        console.log(_err);
+        this.setState({...this.state, status: LoginStatus.fail});
+      });
+
+    this.setState({...this.state, status: LoginStatus.trying});
     _e.preventDefault();
   }
 
-  render() {
+  renderFormControl = (_status) => {
     const {classes} = this.props;
-  
+
+    if(_status === LoginStatus.initial) {
+      return (<Button
+        type="submit"
+        fullWidth
+        variant="contained"
+        color="primary"
+        className={classes.submit}
+        onClick={this.onLogin}>
+        Login
+      </Button>);
+    } else if(_status === LoginStatus.trying) {
+      return (
+      <div>
+        <Typography component="h5" className={classes.center}>로그인 중 입니다..</Typography>
+        <div className={classes.progress}>
+          <CircularProgress/>
+        </div>
+      </div>);
+    } else {
+      return (
+        <div>
+          <Typography component="h5" className={classes.center}>이메일/패스워드가 맞지 않습니다</Typography>
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            color="primary"
+            className={classes.submit}
+            onClick={this.onLogin}>
+            Login
+          </Button>
+        </div>
+      )
+    }
+  }
+
+  render() {
+    const {classes} = this.props;  
+    const {status} = this.state;
+    console.log(this.props.firebase.isLoggedIn());
     return (
       <div>
         <CssBaseline/>
@@ -64,15 +125,7 @@ export class Login extends Component {
                   id="password"
                   value={this.state.password}
                   onChange={this.onPasswordChange}/>
-                <Button
-                  type="submit"
-                  fullWidth
-                  variant="contained"
-                  color="primary"
-                  className={classes.submit}
-                  onClick={this.onLogin}>
-                  Login
-                </Button>
+                {this.renderFormControl(status)}
               </form>
             </div>
           </Grid>
@@ -82,4 +135,4 @@ export class Login extends Component {
   }
 }
 
-export default withStyles(LoginStyle)(Login);
+export default withStyles(LoginStyle)(withFirebase(Login));

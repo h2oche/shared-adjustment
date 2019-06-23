@@ -8,7 +8,6 @@ import StudyPage from "./pages/Study";
 import CompletePage from "./pages/Complete";
 import AdminPage from "./pages/Admin";
 
-
 export class App extends Component {
   render() {
     return (

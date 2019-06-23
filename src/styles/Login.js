@@ -21,6 +21,14 @@ const styles = _theme => ({
   },
   submit : {
     margin: _theme.spacing(3,0,2)
+  },
+  progress: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center'
+  },
+  center : {
+    textAlign: "center"
   }
 });
 
