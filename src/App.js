@@ -1,26 +1,29 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from 'react';
+import 'typeface-roboto';
+import {HashRouter, Route} from "react-router-dom";
+import MainPage from "./pages/Main";
+import LoginPage from "./pages/Login";
+import RulesPage from "./pages/Rules";
+import StudyPage from "./pages/Study";
+import CompletePage from "./pages/Complete";
+import AdminPage from "./pages/Admin";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+
+export class App extends Component {
+  render() {
+    return (
+      <div>
+        <HashRouter>
+          <Route exact path="/" component={LoginPage}/>
+          <Route exact path="/main" component={MainPage}/>
+          <Route path="/rules" component={RulesPage}/>
+          <Route path="/study" component={StudyPage}/>
+          <Route exact path="/complete" component={CompletePage}/>
+          <Route exact path="/admin" component={AdminPage}/>
+        </HashRouter>
+      </div>
+    )
+  }
 }
 
-export default App;
+export default App
