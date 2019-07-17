@@ -5,6 +5,8 @@ import NeedAuth from "../components/NeedAuth";
 
 export class Rules extends Component {
   render() {
+    
+
     return (
       <div>
         <NeedAuth/>

@@ -3,20 +3,14 @@ import {Grid, CssBaseline, Avatar, Typography, TextField, Button, CircularProgre
 import {LooksOutlined} from "@material-ui/icons";
 import {withStyles} from "@material-ui/core/styles"
 import LoginStyle from "../styles/Login";
-import {withFirebase} from "../components/firebase";
-
-const LoginStatus = {
-  initial: "LOGIN_STATE_INITIAL",
-  trying: "LOGIN_STATE_TRYING",
-  fail: "LOGIN_STATE_FAIL"
-};
+import {signIn, loginPageStatus} from "../store/reducers/login";
+import {connect} from "react-redux";
 
 export class Login extends Component {
   // styles = LoginStyle();
   state = {
     email: "",
-    password: "",
-    status: LoginStatus.initial
+    password: ""
   }
 
   onEmailChange = (_event) => {
@@ -28,28 +22,16 @@ export class Login extends Component {
   }
 
   onLogin = (_e) => {
-    console.log(this.state);
-    console.log("Try to login");
-    console.log(this.props);
     const {email, password} = this.state;
-    this.props.firebase
-      .login(email, password)
-      .then(_authUser => {
-        console.log(_authUser);
-      })
-      .catch(_err => {
-        console.log(_err);
-        this.setState({...this.state, status: LoginStatus.fail});
-      });
-
-    this.setState({...this.state, status: LoginStatus.trying});
+    const {signIn} = this.props;
+    signIn(email, password);
     _e.preventDefault();
   }
 
   renderFormControl = (_status) => {
     const {classes} = this.props;
 
-    if(_status === LoginStatus.initial) {
+    if(_status === loginPageStatus.initial) {
       return (<Button
         type="submit"
         fullWidth
@@ -59,7 +41,7 @@ export class Login extends Component {
         onClick={this.onLogin}>
         Login
       </Button>);
-    } else if(_status === LoginStatus.trying) {
+    } else if(_status === loginPageStatus.pending) {
       return (
       <div>
         <Typography component="h5" className={classes.center}>로그인 중 입니다..</Typography>
@@ -86,9 +68,8 @@ export class Login extends Component {
   }
 
   render() {
-    const {classes} = this.props;  
-    const {status} = this.state;
-    console.log(this.props.firebase.isLoggedIn());
+    const {classes, status} = this.props;
+
     return (
       <div>
         <CssBaseline/>
@@ -135,4 +116,11 @@ export class Login extends Component {
   }
 }
 
-export default withStyles(LoginStyle)(withFirebase(Login));
+const mapStateToProps = state => ({
+  status: state.login.status
+});
+const mapDispatchToProps = dispatch => ({
+  signIn: (email, password) => dispatch(signIn(email, password))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(LoginStyle)(Login));

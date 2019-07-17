@@ -5,12 +5,14 @@ import {Redirect} from "react-router-dom";
 export class NeedAuth extends Component {
   render() {
     const isLoggedIn = this.props.firebase.isLoggedIn();
+    const currentUser = this.props.firebase.auth.currentUser;
 
     return (
       <div>
-        {!isLoggedIn ? 
+        {JSON.stringify(currentUser)}
+        {/* {!isLoggedIn ? 
           <Redirect to="/"/> :
-          <span/>}
+          <span>{JSON.stringify(currentUser)}</span>} */}
       </div>
     )
   }
