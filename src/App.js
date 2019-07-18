@@ -4,6 +4,7 @@ import {connect} from "react-redux";
 import {authChange} from "./store/reducers/meta";
 import LoadingPage from "./pages/Loading";
 import LoginPage from "./pages/Login";
+import ChatComponent from "./components/Chat";
 import listen, {FB_ON_AUTH_STATE_CHANGE, FB_ON_PROJECT_STATE_CHANGE} from "./store/event";
 
 const PAGES = {
@@ -34,7 +35,8 @@ export class App extends Component {
     2. project type
     3. project status
     */
-    return (<div>{JSON.stringify(authUser)}}</div>);
+    // return (<div>{JSON.stringify(authUser)}}</div>);
+    return <ChatComponent/>
   }
 }
 

@@ -10,8 +10,10 @@ export const authChange = (authUser) => {
   return async (dispatch, getState) => {
     if(authUser === null) return dispatch({type: NEED_AUTH});
 
-    const user = await fb.DB.ref(`/users/${authUser.uid}`).once('value');
-    const project = await fb.DB.ref(`/projects/${user.projectId}`).once('value');
+    const userSnapshot = await fb.DB.ref(`/users/${authUser.uid}`).once('value');
+    const user = userSnapshot.val();
+    const projectSnapshot = await fb.DB.ref(`/projects/${user.projectId}`).once('value');
+    const project = projectSnapshot.val();
 
     console.log(authUser);
     console.log(user);
