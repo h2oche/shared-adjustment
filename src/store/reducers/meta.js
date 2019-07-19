@@ -4,6 +4,7 @@ import Firebase from "../fb";
 const NEED_AUTH = "meta/NEED_AUTH";
 const AUTH_CHANGE = "meta/AUTH_CHANGE";
 const PROJECT_STATE_CHANGE = "meta/PROJECT_STATE_CHANGE";
+const READ_MAIN = "meta/READ_MAIN";
 const fb = new Firebase();
 
 export const authChange = (authUser) => {
@@ -26,6 +27,14 @@ export const authChange = (authUser) => {
   }
 }
 
+export const readMain = () => {
+  return async (dispatch, getState) => {
+    const authUser = getState().meta.authUser;
+    await fb.DB.ref(`/users/${authUser.uid}/readMain`).set(true);
+    dispatch({type: READ_MAIN});
+  }
+}
+
 export const projectStateChange = project => ({
   type: PROJECT_STATE_CHANGE,
   payload: project.state
@@ -40,9 +49,15 @@ const initialState = {
 
 export default function meta(state = initialState, action) {
   switch(action.type) {
+    case READ_MAIN: {
+      return produce(state, draft => {
+        draft.user.readMain = true;
+      });
+    }
     case NEED_AUTH: {
       return produce(state, draft => {
         draft.pending = false;
+        draft.authUser = null;
       });
     }
     case AUTH_CHANGE: {

@@ -4,6 +4,7 @@ import {connect} from "react-redux";
 import {authChange} from "./store/reducers/meta";
 import LoadingPage from "./pages/Loading";
 import LoginPage from "./pages/Login";
+import ProjectMainPage from "./pages/ProjectMain";
 import ChatComponent from "./components/Chat";
 import listen, {FB_ON_AUTH_STATE_CHANGE, FB_ON_PROJECT_STATE_CHANGE} from "./store/event";
 
@@ -30,6 +31,7 @@ export class App extends Component {
     const {authUser, pending, user, project} = this.props;
     if(pending) return <LoadingPage/>;
     else if(authUser === null) return <LoginPage/>;
+    else if(!user.readMain) return <ProjectMainPage/>;
     /*
     1. user의 role
     2. project type
