@@ -29,7 +29,7 @@ const styles = _theme => ({
   chatContainer: {
     display: "flex",
     flexDirection: "column",
-    height: "100%"
+    height: "90%"
   },
   chatListContainer: {
     flex: 8,

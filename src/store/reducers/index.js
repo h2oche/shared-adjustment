@@ -2,6 +2,8 @@ import {combineReducers} from "redux";
 import meta from "./meta";
 import chat from "./chat";
 import login from "./login";
+import rules from "./rules";
+import monitor from "./monitor";
 
 /* app state blueprint
 {
@@ -23,5 +25,5 @@ import login from "./login";
 
 
 export default combineReducers({
-  meta, chat, login
+  meta, chat, login, rules, monitor
 });

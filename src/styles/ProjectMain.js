@@ -18,6 +18,10 @@ const styles = _theme => ({
   },
   toolbarContainer: {
     marginTop: "20px"
+  },
+  instrWrapper: {
+    padding: "10px",
+    marginBottom: "10px"
   }
 });
 

@@ -1,15 +1,25 @@
 import produce from "immer";
 import Firebase from "../fb";
+import { projectStates } from "../event";
 
 const NEED_AUTH = "meta/NEED_AUTH";
 const AUTH_CHANGE = "meta/AUTH_CHANGE";
 const PROJECT_STATE_CHANGE = "meta/PROJECT_STATE_CHANGE";
 const READ_MAIN = "meta/READ_MAIN";
 const fb = new Firebase();
+const TARGET_READ_COUNT = 4;
+
+export const userRoleConst = {
+  LEADER: "leader",
+  NORMAL: "normal",
+  ADMIN: "admin"
+};
 
 export const authChange = (authUser) => {
   return async (dispatch, getState) => {
     if(authUser === null) return dispatch({type: NEED_AUTH});
+
+    // fb.auth.signOut();
 
     const userSnapshot = await fb.DB.ref(`/users/${authUser.uid}`).once('value');
     const user = userSnapshot.val();
@@ -35,9 +45,32 @@ export const readMain = () => {
   }
 }
 
-export const projectStateChange = project => ({
+export const readNormalMain = () => {
+  return async (dispatch, getState) => {
+    const {user, authUser} = getState().meta;
+    await fb.DB.ref(`/users/${authUser.uid}/readMain`).set(true);
+
+    const {projectId} = user;
+    const usersSnapshot = await fb.DB.ref(`/users`).orderByChild('projectId').equalTo(projectId).once('value');
+    const usersObj = usersSnapshot.val();
+    let counter = 0;
+    
+    for(let uid in usersObj)
+      if(usersObj[uid].readMain)
+        counter++;
+    
+    if(counter === TARGET_READ_COUNT) {
+      await fb.DB.ref(`/projects/${projectId}/startAt`).set(new Date().getTime());
+      fb.DB.ref(`/projects/${projectId}/state`).set(projectStates.study);
+    }
+
+    dispatch({type: READ_MAIN});
+  }
+}
+
+export const projectStateChange = newState => ({
   type: PROJECT_STATE_CHANGE,
-  payload: project.state
+  payload: newState
 });
 
 const initialState = {
@@ -66,11 +99,22 @@ export default function meta(state = initialState, action) {
         draft.user = action.payload.user;
         draft.project = action.payload.project;
         draft.pending = false;
+
+        if(draft.project && 
+          (draft.project.state === projectStates.rule ||
+          draft.project.state === projectStates.study ||
+          draft.project.state === projectStates.ruleReselect))
+            draft.project.accepting = null;
       });
     }
     case PROJECT_STATE_CHANGE: {
       return produce(state, draft => {
+        if(!draft.project) return;
         draft.project.state = action.payload;
+        if(draft.project.state === projectStates.rule ||
+          draft.project.state === projectStates.study ||
+          draft.project.state === projectStates.ruleReselect)
+            draft.project.accepting = null;
       });
     }
     default:
