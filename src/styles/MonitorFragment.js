@@ -29,7 +29,7 @@ const styles = _theme => ({
     fontSize: `${fontSize}px`,
     width: `${size}px`,
     height: `${size}px`,
-    border: "15px solid yellow",
+    border: "15px solid rgb(255, 192, 0)",
     borderRadius: "50%"
   },
   alert: {
@@ -41,7 +41,8 @@ const styles = _theme => ({
   },
   monitorToggleBtn: {
     width: "110px",
-    margin: "10px"
+    margin: "10px",
+    fontSize: "12px"
   }
 });
 

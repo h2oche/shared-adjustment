@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import ChatListItem from "./ChatListItem";
-import {List} from "@material-ui/core";
+import {List, Paper} from "@material-ui/core";
 import {withStyles} from "@material-ui/core/styles";
 import ChatStyles from "../../styles/Chat";
 
@@ -33,11 +33,11 @@ export class ChatList extends Component {
 
     return (
       <List dense className={classes.chatListContainer}>
-        <div
+        <Paper
           className={classes.chatListItemContainer}
           ref={(div) => {this.chatList = div}}>
           {this.renderChatItems()}
-        </div>
+        </Paper>
       </List>
     )
   }

@@ -4,8 +4,8 @@ import {Typography, Container, Grid, CssBaseline, Paper, Button, Modal} from "@m
 import {withStyles} from "@material-ui/core/styles"
 import SelectPrivateRule from "../styles/SelectPrivateRule";
 import {connect} from "react-redux";
-import listen, {FB_ON_RULES_CHECK} from "../store/event";
-import ProjectDetails from "../components/ProjectDetails";
+import listen, {FB_ON_RULES_CHECK, FB_ON_SELECT_RULE_CHANGE} from "../store/event";
+import ProjectDetailModal from "../components/ProjectDetailModal";
 import ChatComponent from "../components/Chat";
 import {checkRule, submitRule} from "../store/reducers/rules";
 import {userRoleConst} from "../store/reducers/meta";
@@ -49,13 +49,6 @@ export class SelectRule extends Component {
     openDetails: false,
   }
 
-  selectedRules = {
-    communication: 0,
-    positiveVibe: 0,
-    mission: 0,
-    comprehension: 0,
-  }
-
   toggleOpenDetails = () => {
     this.setState({openDetails: !this.state.openDetails});
   }
@@ -74,15 +67,11 @@ export class SelectRule extends Component {
   }
 
   componentWillMount = () => {
-    const {_dispatch, selectedRules} = this.props;
+    const {_dispatch} = this.props;
     const {projectId} = this.props.user;
-    
-    for(let uid in selectedRules)
-      for(let ruleName in selectedRules[uid])
-        if(selectedRules[uid][ruleName])
-          this.selectedRules[ruleName]++;
 
-    listen([FB_ON_RULES_CHECK], _dispatch, {projectId})
+    listen([FB_ON_RULES_CHECK, FB_ON_SELECT_RULE_CHANGE], _dispatch, {projectId})
+    // listen([FB_ON_RULES_CHECK], _dispatch, {projectId})
   }
 
   handleCheckRule = (_ruleName) => {
@@ -94,8 +83,22 @@ export class SelectRule extends Component {
 
   renderGraph = () => {
     var fragments = [];
-    for(let ruleName in this.selectedRules)
-      fragments.push(<GraphFragment ruleName={ruleName} count={this.selectedRules[ruleName]} key={ruleName} />)
+    const {selectedRules} = this.props;
+
+    var counter = {
+      communication: 0,
+      positiveVibe: 0,
+      mission: 0,
+      comprehension: 0,
+    }
+    
+    for(let uid in selectedRules)
+      for(let ruleName in selectedRules[uid])
+        if(selectedRules[uid][ruleName])
+          counter[ruleName]++;
+
+    for(let ruleName in counter)
+      fragments.push(<GraphFragment ruleName={ruleName} count={counter[ruleName]} key={ruleName} />)
     return fragments;
   }
 
@@ -126,7 +129,9 @@ export class SelectRule extends Component {
               </Grid>
               <Grid item xs={12}>
                 <Paper className={classes.instrWrapper}>
-                  {this.renderGraph()}
+                  <div style={{textAlign:"center"}}>
+                    {this.renderGraph()}
+                  </div>
                 </Paper>
               </Grid>
               <Grid item xs={12}>
@@ -159,11 +164,9 @@ export class SelectRule extends Component {
           </Grid>
           
         </Container>
-        <Modal
+        <ProjectDetailModal
           open={this.state.openDetails}
-          onClose={this.toggleOpenDetails}>
-          <ProjectDetails/>
-        </Modal>
+          toggleOpen={this.toggleOpenDetails}/>
       </div>
     )
   }

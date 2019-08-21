@@ -1,5 +1,5 @@
 import Firebase from "./fb";
-import {authChange, projectStateChange} from "./reducers/meta";
+import {authChange, projectStateChange, projectSeleteRuleChange, projectStartAtChange} from "./reducers/meta";
 import {newChat} from "./reducers/chat";
 import {newRules} from "./reducers/rules";
 import {newMonitors} from "./reducers/monitor";
@@ -12,6 +12,8 @@ export const FB_ON_NEW_CHAT = "firebase/ON_NEW_CHAT";
 export const FB_ON_RULES_CHECK = "firebase/ON_RULES_CHECK";
 export const FB_ON_RESELECT_RULES_CHECK = "firebase/ON_RESELECT_RULES_CHECK";
 export const FB_ON_MONITOR_STATE_CHANGE = "firebase/ON_MONITOR_STATE_CHANGE";
+export const FB_ON_SELECT_RULE_CHANGE = "firebase/FB_ON_SELECT_RULE_CHANGE";
+export const FB_ON_PROJECT_START_CHANGE = "firebase/FB_ON_PROJECT_START_CHANGE";
 const TARGET_THRESHOLD = 3;
 
 export const projectStates = {
@@ -28,6 +30,27 @@ export const projectStates = {
 const ruleNames = ["communication", "positiveVibe", "comprehension", "mission"];
 
 const eventListnerMapper = {
+  [FB_ON_PROJECT_START_CHANGE]: (dispatch, etc) => {
+    const {projectId} = etc;
+
+    console.log(`listen ${FB_ON_PROJECT_START_CHANGE} event...`, projectId);
+
+    fb.DB.ref(`/projects/${projectId}/startAt`).on('value', _snapshot => {
+      const newStartAt = _snapshot.val();
+      console.log(newStartAt);
+      dispatch(projectStartAtChange(newStartAt));
+    });
+  },
+  [FB_ON_SELECT_RULE_CHANGE]: (dispatch, etc) => {
+    const {projectId} = etc;
+
+    console.log(`listen ${FB_ON_SELECT_RULE_CHANGE} event...`, projectId);
+
+    fb.DB.ref(`/projects/${projectId}/selectedRules`).on('value', _snapshot => {
+      const newSelectedRules = _snapshot.val();
+      dispatch(projectSeleteRuleChange(newSelectedRules));
+    });
+  },
   [FB_ON_AUTH_STATE_CHANGE]: (dispatch, etc) => {
     console.log(`listen ${FB_ON_AUTH_STATE_CHANGE} event...`);
     fb.auth.onAuthStateChanged(_authUser => {

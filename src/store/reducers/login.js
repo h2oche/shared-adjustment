@@ -16,6 +16,7 @@ export const signIn = (id, password) => {
   return async (dispatch) => {
     dispatch({type: LOGIN_PENDING});
     try {
+      await fb.auth.setPersistence('session');
       const authUser = await fb.auth.signInWithEmailAndPassword(id, password);
       console.log(authUser);
     }

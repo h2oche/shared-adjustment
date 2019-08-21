@@ -5,7 +5,7 @@ import {withStyles} from "@material-ui/core/styles";
 import SelectPrivateRuleStyle from "../styles/SelectPrivateRule";
 import {connect} from "react-redux";
 import listen, {FB_ON_RESELECT_RULES_CHECK, FB_ON_RULES_CHECK} from "../store/event";
-import ProjectDetails from "../components/ProjectDetails";
+import ProjectDetailModal from "../components/ProjectDetailModal";
 import ChatComponent from "../components/Chat";
 import {checkRule, submitRule} from "../store/reducers/rules";
 import {userRoleConst} from "../store/reducers/meta";
@@ -144,11 +144,9 @@ export class RuleReselect extends Component {
           </Grid>
           
         </Container>
-        <Modal
+        <ProjectDetailModal
           open={this.state.openDetails}
-          onClose={this.toggleOpenDetails}>
-          <ProjectDetails/>
-        </Modal>
+          toggleOpen={this.toggleOpenDetails}/>
       </div>
     )
   }

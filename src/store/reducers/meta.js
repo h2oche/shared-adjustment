@@ -5,7 +5,10 @@ import { projectStates } from "../event";
 const NEED_AUTH = "meta/NEED_AUTH";
 const AUTH_CHANGE = "meta/AUTH_CHANGE";
 const PROJECT_STATE_CHANGE = "meta/PROJECT_STATE_CHANGE";
+const PROJECT_SELECT_RULE_CHANGE = "meta/PROJECT_SELECT_RULE_CHANGE";
+const PROJECT_START_CHANGE = "meta/PROJECT_START_CHANGE";
 const READ_MAIN = "meta/READ_MAIN";
+
 const fb = new Firebase();
 const TARGET_READ_COUNT = 4;
 
@@ -73,6 +76,16 @@ export const projectStateChange = newState => ({
   payload: newState
 });
 
+export const projectSeleteRuleChange = newSelectRule => ({
+  type: PROJECT_SELECT_RULE_CHANGE,
+  payload: newSelectRule
+});
+
+export const projectStartAtChange = newStartAt => ({
+  type: PROJECT_START_CHANGE,
+  payload: newStartAt
+});
+
 const initialState = {
   authUser: null,
   user: null,
@@ -115,6 +128,19 @@ export default function meta(state = initialState, action) {
           draft.project.state === projectStates.study ||
           draft.project.state === projectStates.ruleReselect)
             draft.project.accepting = null;
+      });
+    }
+    case PROJECT_SELECT_RULE_CHANGE: {
+
+      return produce(state, draft => {
+        if(!draft.project) return;
+        draft.project.selectedRules = action.payload;
+      });
+    }
+    case PROJECT_START_CHANGE: {
+      return produce(state, draft => {
+        if(!draft.project) return;
+        draft.project.startAt = action.payload;
       });
     }
     default:

@@ -1,5 +1,5 @@
 import produce from "immer";
-import Firebase from "../fb";
+import Firebase, {TIMESTAMP} from "../fb";
 
 const NEW_MONITORS = "monitor/NEW_MONITORS";
 const TOGGLE_MONITOR = "monitor/TOGGLE_MONITOR";
@@ -30,8 +30,8 @@ export const toggleMonitor = (_ruleName, _uid, _projectId) => {
     const targetRef = fb.DB.ref(`/monitors/${_projectId}/${_ruleName}/${_uid}`);
     const oldValue = !!(monitorObj && monitorObj[_uid]);
 
-    fb.DB.ref(`/ruleLog/${_projectId}`).push({
-      timestamp: new Date().getTime(),
+    await fb.DB.ref(`/ruleLog/${_projectId}`).push({
+      timestamp: TIMESTAMP,
       uid: _uid,
       value: oldValue,
       ruleName: _ruleName

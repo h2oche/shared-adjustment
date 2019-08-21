@@ -5,7 +5,7 @@ import {withStyles} from "@material-ui/core/styles"
 import SelectPrivateRuleStyle from "../styles/SelectPrivateRule";
 import {connect} from "react-redux";
 import {checkPrivateRule, submitPrivateRule} from "../store/reducers/rules";
-import ProjectDetails from "../components/ProjectDetails";
+import ProjectDetailModal from "../components/ProjectDetailModal";
 import StepperComponent from "../components/Stepper";
 
 export class SelectPriavteRule extends Component {
@@ -81,11 +81,9 @@ export class SelectPriavteRule extends Component {
           </Grid>
           
         </Container>
-        <Modal
+        <ProjectDetailModal
           open={this.state.openDetails}
-          onClose={this.toggleOpenDetails}>
-          <ProjectDetails/>
-        </Modal>
+          toggleOpen={this.toggleOpenDetails}/>
       </div>
     )
   }

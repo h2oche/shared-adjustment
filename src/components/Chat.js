@@ -6,6 +6,7 @@ import ChatInput from "./chat/ChatInput";
 import {withStyles} from "@material-ui/core/styles";
 import ChatStyles from "../styles/Chat";
 import {sendChat} from "../store/reducers/chat";
+import {TIMESTAMP} from "../store/fb";
 
 export class Chat extends Component {
   componentWillMount = async () => {
@@ -18,7 +19,7 @@ export class Chat extends Component {
     sendChat({
       content: _text,
       userName: user.name,
-      timestamp: (new Date()).getTime()
+      timestamp: TIMESTAMP
     }, user.projectId);
   }
 

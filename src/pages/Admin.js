@@ -64,6 +64,16 @@ export class Admin extends Component {
       logs.push(chatData[key]);
     for(let key in rulelogData)
       logs.push(rulelogData[key]);
+
+    let filteredLogs = [];
+    let prevIsRules = false;
+    logs.forEach(_row => {
+      if(_row.ruleName === "rules" && prevIsRules) return;
+      prevIsRules = _row.ruleName === "rules";
+      filteredLogs.push(_row);
+    });
+
+    logs = filteredLogs;
     logs.sort((obj1, obj2) => obj1.timestamp - obj2.timestamp);
 
     let rules = logs.filter(_row => _row.ruleName === "rules");
@@ -77,8 +87,6 @@ export class Admin extends Component {
         ruleIdx += 1;
       }
     });
-
-    console.log(logs);
 
     const {users} = this.state;
     const whiteLists = ["communication", "positiveVibe", "reselect", "mission", "comprehension"];
@@ -107,7 +115,7 @@ export class Admin extends Component {
     let encodedUri = encodeURI(csvContent);
     var link = document.createElement("a");
     link.setAttribute("href", encodedUri);
-    link.setAttribute("download", `${selectedProject.name}-chat.csv`);
+    link.setAttribute("download", `${selectedProject.name}-log.csv`);
     document.body.appendChild(link); // Required for FF
     link.click();
   }
@@ -177,7 +185,7 @@ export class Admin extends Component {
               </div>
               
               <Button
-                onClick={this.downLoadLogs}>
+                onClick={() => this.downloadLogs()}>
                 점검버튼/채팅 로그 다운로드
               </Button>
 
@@ -190,7 +198,7 @@ export class Admin extends Component {
             return <div>
               <p>프로젝트 이름 : {this.state.selectedProject.name}({this.state.selectedProject.type})</p>
               <Button
-                onClick={this.downloadChats}>
+                onClick={() => this.downloadChats()}>
                 채팅 로그 다운로드
               </Button>
               <Button

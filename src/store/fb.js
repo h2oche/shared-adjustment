@@ -19,3 +19,4 @@ class Firebase {
 }
 
 export default Firebase;
+export const TIMESTAMP = app.database.ServerValue.TIMESTAMP;
