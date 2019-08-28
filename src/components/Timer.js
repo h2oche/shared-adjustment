@@ -17,7 +17,7 @@ export class Timer extends Component {
       const {startAt} = this.props;
       const endAt = startAt + 1000 * 60 * 90;
       let leftSeconds = endAt - new Date().getTime();
-      // console.log(leftSeconds);
+
       if(leftSeconds < 0) {
         this.props.end();
         clearInterval(this.key);

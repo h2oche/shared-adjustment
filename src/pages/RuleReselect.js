@@ -100,7 +100,7 @@ export class RuleReselect extends Component {
                     현재 우리 팀의 많은 팀원들이 점검 요소를 재선정해야 할 필요성을 느끼고 있습니다. 앞으로 어떤 요소에 특히 주의를 기울여 점검해 나갈 것인지 팀원과 함께 토론하여 선택하시기 바랍니다 <b>(중복선택 가능)</b>.
                   </Typography>
                   <Typography component="h4">
-                    선택 후, 1번 학습자가 [제출하기] 버튼을 누르면 이전 화면으로 돌아갑니다.
+                    선택 후, 사전에 지정된 학습자가 [제출하기] 버튼을 누르면 이전 화면으로 돌아갑니다.
                   </Typography>
                 </Paper>
               </Grid>

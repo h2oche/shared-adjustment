@@ -40,7 +40,10 @@ class GraphFragment extends Component {
   render() {
     const {ruleName, count} = this.props;
 
-    return <div>{ruleNameEtc[ruleName].korean} : {this.renderRects()} {count}명 ({25*count}%)</div>
+    return <tr style={{fontSize:"1.4em", width: "100%", fontWeight: "bold"}}>
+      <td style={{width:"50%", textAlign: "right"}}>{ruleNameEtc[ruleName].korean} : </td>
+      <td><span style={{color:"rgb(255,102,0)"}}>{this.renderRects()}</span> {count}명 ({25*count}%)</td>
+    </tr>
   }
 }
 
@@ -99,7 +102,7 @@ export class SelectRule extends Component {
 
     for(let ruleName in counter)
       fragments.push(<GraphFragment ruleName={ruleName} count={counter[ruleName]} key={ruleName} />)
-    return fragments;
+    return <table style={{width:"100%"}}><tbody>{fragments}</tbody></table>;
   }
 
   render() {
@@ -123,15 +126,13 @@ export class SelectRule extends Component {
                     그래프를 참고하여 우리 팀이 문제를 해결해 나가면서 어떤 요소에 특히 주의하여 점검해 나갈 것인지 팀원과 함께 토론하여 선택하시기 바랍니다 <b>(중복선택 가능)</b>.
                   </Typography>
                   <Typography component="h4">
-                    선택 후, 1번 학습자가 [제출하기] 버튼을 누르면 다음 단계로 넘어갑니다.
+                    선택 후, 사전에 지정된 학습자가 [제출하기] 버튼을 누르면 다음 단계로 넘어갑니다.
                   </Typography>
                 </Paper>
               </Grid>
               <Grid item xs={12}>
                 <Paper className={classes.instrWrapper}>
-                  <div style={{textAlign:"center"}}>
-                    {this.renderGraph()}
-                  </div>
+                  {this.renderGraph()}
                 </Paper>
               </Grid>
               <Grid item xs={12}>

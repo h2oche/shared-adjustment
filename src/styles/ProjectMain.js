@@ -27,7 +27,7 @@ const styles = _theme => ({
     backgroundColor: _theme.palette.primary.main
   },
   secondaryHeadingBackground: {
-    backgroundColor: _theme.palette.secondary.main,
+    backgroundColor: "rgb(147,157,217)",
   },
   heading: {
     fontSize: _theme.typography.pxToRem(20),

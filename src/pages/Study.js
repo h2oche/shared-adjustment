@@ -78,7 +78,7 @@ class MonitorFragment extends Component {
     const count = this.getCount(data);
  
     return (<Card className={classes.container}>
-      <div>{ruleNameEtc[ruleName].korean}</div>
+      <div style={{fontSize: "0.85em"}}>{ruleNameEtc[ruleName].korean}</div>
       {this.renderToggleBtn()}
       <div className={this.getCountClassName(count)}>
         {count}
@@ -172,12 +172,12 @@ export class Study extends Component {
                     <div>
                       <p>이제부터 팀원과 함께 주어진 질문에 답변하면서 학습활동을 설계해 주시기 바랍니다.</p>
                       <p>학습활동을 설계하는 동안, 점검이 필요하다고 판단될 때 마다 아래 [점검필요] 버튼을 클릭하십시오. 점검을 원하는 학습자가 늘어나면 색과 인원수가 변경됩니다. 같은 요소에 대해 3명이상이 점검을 필요로 하는 경우, 해당 요소를 점검할 수 있도록 안내문이 제공됩니다.</p>
-                      <p>학습활동 설계가 완료된 후, 1번 학습자가 [제출하기] 버튼을 누르면 다음 단계로 넘어갑니다.</p>
+                      <p>학습활동 설계가 완료된 후, 사전에 지정된 학습자가 [제출하기] 버튼을 누르면 다음 단계로 넘어갑니다.</p>
                     </div>
                     :
                     <div>
                       <h4>이제부터 팀원과 주어진 질문에 답변하면서 학습활동을 설계해 주시기 바랍니다.</h4>
-                      <h4>학습활동 설계가 완료된 후, 1번 학습자가 [제출하기] 버튼을 클릭하면 다음 단계로 넘어갑니다.</h4>
+                      <h4>학습활동 설계가 완료된 후, 사전에 지정된 학습자가 [제출하기] 버튼을 클릭하면 다음 단계로 넘어갑니다.</h4>
                     </div>}
                 </Paper>
               </Grid>

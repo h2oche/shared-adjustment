@@ -13,8 +13,7 @@ export class ChatInput extends Component {
   }
 
   onNewChatKeyPress = (e) => {
-    if(e.key === 'Enter' && e.ctrlKey) {
-      // console.log("send ", this.state.newChatContent);
+    if(e.charCode === 13 && e.ctrlKey) {
       this.props.sendNewChat(this.state.newChatContent);
       this.setState({newChatContent:''});
     }

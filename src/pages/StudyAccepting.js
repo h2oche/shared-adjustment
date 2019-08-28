@@ -27,7 +27,7 @@ export class StudyAccepting extends Component {
       <div>
         <CssBaseline/>
         <Grid container className={classes.root}>
-          <p style={{textAlign: "center"}}>수업지도안 제출을 승인하시겠습니까?</p>
+          <p style={{textAlign: "center"}}>학습활동 설계를 완료하시겠습니까?</p>
           <div>
             <Button
               className={classes.acceptingBtn}

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Firebase from "../store/fb";
-import {Typography, Container, Grid, CssBaseline, List, ListItem, ListItemText, Collapse, Button} from "@material-ui/core";
+import {Typography, Container, Grid, CssBaseline, List, ListItem, ListItemText, Collapse, Button, TextField} from "@material-ui/core";
 import {ExpandLess, ExpandMore} from "@material-ui/icons";
 import LoadingPage from "./Loading";
 
@@ -170,10 +170,90 @@ export class Admin extends Component {
     return <div>{ret}</div>;
   }
 
+  onUserNameChange = (e, uid) => {
+    var newUsers = this.state.users;
+    newUsers[uid].newName = e.target.value;
+    this.setState({...this.state, users: newUsers})
+  }
+
+  onChangeBtnClick = async (uid) => {
+    var newName = this.state.users[uid].newName;
+    fb.DB.ref(`/users/${uid}/name`).set(newName);
+    this.state.users[uid].name = newName;
+    this.state.users[uid].newName = '';
+    this.setState({...this.state});
+  }
+
+  resetProject = async() => {
+    if(!this.state.selectedProject) return;
+    let {name, documentURL, type} = this.state.selectedProject;
+
+    var newProjectState = {};
+    newProjectState[`/projects/${name}`] = {
+      state: 'rule-pending',
+      documentURL,
+      type
+    };
+    newProjectState[`/ruleLog/${name}`] = {};
+    newProjectState[`/chats/${name}`] = {};
+    newProjectState[`/monitors/${name}`] = {};
+    
+    for(let uid in this.state.users) {
+      let user = this.state.users[uid];
+      if(user.projectId === name) {
+        newProjectState[`/users/${uid}`] = {
+          readMain: false,
+          selectRule: false,
+          projectId: name,
+          email: user.email,
+          role: user.role,
+          name: user.name
+        }
+      }
+    }
+    
+    await fb.DB.ref().update(newProjectState);
+    alert(`프로젝트(${name})가 초기화 되었습니다`);
+    window.location.reload();
+  }
+
+  renderUserInfos = () => {
+    var {users} = this.state;
+    var userArr = [];
+
+    for(let uid in users) {
+      users[uid].uid = uid;
+      userArr.push(users[uid]);
+    }
+
+    userArr.sort((_u1, _u2) => {
+      return _u1.projectId === _u2.projectId ? 0 : (_u1.projectId < _u2.projectId ? -1 : 1);
+    });
+
+    return <table>
+      <thead>
+        <tr>
+          <th>사용자 계정(이메일)</th>
+          <th>채팅창 이름</th>
+          <th>변경할 이름</th>
+          <th>변경</th>
+        </tr>
+      </thead>
+      <tbody>
+        {userArr.filter(_user => _user.role !== "admin").map(_user => <tr key={_user.uid}>
+            <td>{_user.email}</td>
+            <td>{_user.name}</td>
+            <td><TextField value={_user.newName ? _user.newName : ''} onChange={e => this.onUserNameChange(e, _user.uid)}/></td>
+            <td><Button onClick={e => this.onChangeBtnClick(_user.uid)}>변경하기</Button></td>
+          </tr>)}
+      </tbody>
+    </table>
+  }
+
   renderMainComponent = () => {
     switch(this.state.selectedIdx) {
       case 1:
-        return <span>프로젝트 이미지 변경</span>
+        return this.renderUserInfos();
       case 2:
         if(this.state.selectedProject)
           if(this.state.selectedProject.type !== "normal")
@@ -193,6 +273,11 @@ export class Admin extends Component {
                 onClick={this.downloadDocument}>
                 실시간 공유문서 다운로드
               </Button>
+
+              <Button
+                onClick={this.resetProject}>
+                프로젝트 초기화
+              </Button>
             </div>
           else
             return <div>
@@ -204,6 +289,11 @@ export class Admin extends Component {
               <Button
                 onClick={this.downloadDocument}>
                 실시간 공유문서 다운로드
+              </Button>
+
+              <Button
+                onClick={this.resetProject}>
+                프로젝트 초기화
               </Button>
             </div>
       default:
@@ -233,7 +323,7 @@ export class Admin extends Component {
           <Grid item xs={3}>
             <List component="nav">
               <ListItem button onClick={this.showImageChange} selected={selectedIdx === 1}>
-                <ListItemText primary="프로젝트 변경하기"/>
+                <ListItemText primary="사용자 이름 변경하기"/>
               </ListItem>
               <ListItem button onClick={this.expandMenu} selected={selectedIdx === 2}>
                 <ListItemText primary="프로젝트"/>

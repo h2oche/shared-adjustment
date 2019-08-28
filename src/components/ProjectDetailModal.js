@@ -7,7 +7,8 @@ export class ProjectDetailModal extends Component {
     return (
       <Modal
         open={this.props.open}
-        onClose={this.props.toggleOpen}>
+        onClose={this.props.toggleOpen}
+        style={{overflow:"scroll"}}>
         <div style={{padding: "30px"}}>
           <ProjectDetails/>
           <Button
