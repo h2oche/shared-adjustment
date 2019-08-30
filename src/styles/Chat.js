@@ -8,7 +8,10 @@ const styles = _theme => ({
     color: "#999"
   },
   content: {
-    margin: 0
+    margin: 0,
+    whiteSpace: "pre-wrap",
+    wordWrap: "break-word",
+    fontSize: "1.1rem"
   },
   newChat: {
     minHeight: "70px",
@@ -29,14 +32,16 @@ const styles = _theme => ({
   chatContainer: {
     display: "flex",
     flexDirection: "column",
-    height: "60%"
+    height: "74vh",
+    width: "100%"
   },
   chatListContainer: {
     flex: 8,
     height: "500px"
   },
   chatListItemContainer: {
-    overflow: "scroll",
+    overflowX: "hidden",
+    overflowY: "auto",
     height: "100%"
   },
   chatInputContainer: {

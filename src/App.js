@@ -88,6 +88,9 @@ export class App extends Component {
       else return <CompletePage/>
     }
     else if(project.type === "normal") {
+      console.log("hello?")
+      console.log(project.state);
+
       if(project.state === projectStates.rulePending) return <LoadingPage fragment={<p>다른 팀원들의 응답을 기다리고 있습니다.</p>}/>
       else if(project.state === projectStates.study) return <StudyPage isNormalProject={isNormalProject}/>
       else if(project.state === projectStates.studyAccepting) {
