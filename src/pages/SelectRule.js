@@ -19,7 +19,7 @@ const ruleNameEtc = {
     korean: "긍정적 팀분위기",
   },
   mission: {
-    korean: "문제의 조건달성",
+    korean: "문제의 조건충족",
   },
   comprehension: {
     korean: "팀원의 이해도점검",

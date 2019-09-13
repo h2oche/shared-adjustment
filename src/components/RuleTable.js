@@ -54,12 +54,12 @@ export class RuleTable extends Component {
                 onChange={() => checkRule(ruleConst.mission)}/>
             </TableCell>
             <TableCell className={classes.ruleNameCell}>
-              문제의<br/>조건달성
+              문제의<br/>조건충족
             </TableCell>
             <TableCell className={classes.ruleContentCell}>
               <ul>
-                <li>학습활동 설계에 고려해야 할 조건이 어느 정도 달성되고 있는지 점검하는 것입니다.</li>
-                <li>어떤 조건이 제시되었는지 지속적으로 확인하고, 각 조건이 어느 정도로 달성되었는가를 살펴보는 것이 중요합니다.</li>
+                <li>학습활동 설계에 고려해야 할 조건이 어느 정도 충족되고 있는지 점검하는 것입니다.</li>
+                <li>어떤 조건이 제시되었는지 지속적으로 확인하고, 각 조건이 어느 정도로 충족되었는가를 살펴보는 것이 중요합니다.</li>
               </ul>
             </TableCell>
           </TableRow>

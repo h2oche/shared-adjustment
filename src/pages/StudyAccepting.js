@@ -27,6 +27,11 @@ export class StudyAccepting extends Component {
       <div>
         <CssBaseline/>
         <Grid container className={classes.root}>
+          <p style={{textAlign: "center"}}>
+            모든 팀원이 [승인함]을 클릭하면 다음 페이지로 이동합니다.<br/>
+            한 명의 팀원이라도 [승인하지 않음]을 클릭하면 다시 이전 페이지 활동으로 돌아갑니다.<br/>
+            제출할 내용이 적절한지 생각해 보고, [승인함] 또는 [승인하지 않음]을 클릭하십시오.
+          </p>
           <p style={{textAlign: "center"}}>학습활동 설계를 완료하시겠습니까?</p>
           <div>
             <Button

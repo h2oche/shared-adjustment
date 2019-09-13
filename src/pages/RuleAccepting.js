@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {Grid, CssBaseline, Button} from "@material-ui/core";
+import {Grid, CssBaseline, Button, Paper} from "@material-ui/core";
 import {withStyles} from "@material-ui/core/styles";
 import RuleAcceptingStyle from "../styles/RuleAccepting";
 import {connect} from "react-redux";
@@ -14,7 +14,7 @@ const ruleNameEtc = {
     korean: "긍정적 팀분위기",
   },
   mission: {
-    korean: "문제의 조건달성",
+    korean: "문제의 조건충족",
   },
   comprehension: {
     korean: "팀원의 이해도점검",
@@ -60,6 +60,11 @@ export class RuleAccepting extends Component {
         <CssBaseline/>
         <Grid container className={classes.root}>
           <p style={{textAlign: "center"}}>선택된 점검요소는 {this.renderSelectedRules()} 입니다.</p>
+          <p style={{textAlign: "center"}}>
+            모든 팀원이 [승인함]을 클릭하면 다음 페이지로 이동합니다.<br/>
+            한 명의 팀원이라도 [승인하지 않음]을 클릭하면 다시 이전 페이지 활동으로 돌아갑니다.<br/>
+            선택된 내용이 맞는지 생각해 보고, [승인함] 또는 [승인하지 않음]을 클릭하십시오.
+          </p>
           <p style={{textAlign: "center"}}>승인하시겠습니까?</p>
           <div>
             <Button
